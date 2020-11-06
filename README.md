@@ -19,6 +19,22 @@ The executable file of ImageSorter (ImageSorter.app) is also found in this repos
 ImageSorter.app is expected to be able to run on Windows, Mac OS, and Linux machines.
 
 # Usage
-When you execute ImageSorter, you will see a window like shown below.  
-<kbd>![top window](./images/topwindow.png)</kbd>
+Execute ImageSorter.app or type 
+```
+python /path/to/imagesorter/mian.py
+```
 
+When you execute ImageSorter, you will see a window like shown below.  
+<kbd>![top window](./images/topwindow.png)</kbd>  
+
+Click the "Image Slicer" tab to slice a image into pieses.  
+"File sorter" enable you to classify image files in an input folder into separate folders based on annotation information generated via [RectLabel](https://rectlabel.com/).  
+
+
+
+## Image Slicer
+<kbd>![slicer](./images/slicer.png)</kbd>  
+
+
+## File Sorter
+<kbd>![sorter](./images/sorter.png)</kbd>
