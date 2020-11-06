@@ -1,7 +1,7 @@
 # ImageSorter
 ImageSorter is a GUI-based image processing tool which provides the following functions.
 1. Generate sliced images from an input image.
-2. Sort image files into separate folders based on annotation information generated via ![RectLabel](https://rectlabel.com/).
+2. Sort image files into separate folders based on annotation information generated via [RectLabel](https://rectlabel.com/).
 
 # Dependencies
 ImageSorter is written in Python and requires libraries listed below.  
