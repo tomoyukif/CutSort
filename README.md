@@ -11,7 +11,8 @@ ImageSorter is written in Python and requires libraries listed below.
 - numpy
 - pandas
 - csv
-- xml  
+- xml
+
 All codes are only tested using Python3.7.
 
 The executable file of ImageSorter (ImageSorter.app) is also found in this repository.
