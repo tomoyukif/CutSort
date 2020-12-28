@@ -15,6 +15,8 @@ import pandas as pd
 import numpy as np
 import scipy.stats as stats
 import colorcodes as cc
+from skimage import io, draw
+
             
 def make_object_list(in_dir, out_dir):
     out_list = os.path.join(out_dir, "object_list.csv")
@@ -178,13 +180,14 @@ def merge_slices(in_dir, out_dir, object_list):
     
     root, ext = os.path.splitext(slice_file)
     out_img_path = os.path.join(out_dir, 'original_image' + ext)
-    cv2.imwrite(out_img_path, ori_img)
+    io.imwrite(out_img_path, ori_img)
     out_list_path = os.path.join(out_dir, 'updated_list.csv')
     object_list.to_csv(out_list_path)
     return([out_img_path, out_list_path])
 
 def overlay_annotations(img_file, object_list, out_dir, out_file):
-    ori_img = cv2.imread(img_file)
+    thickness = 10
+    ori_img = io.imread(img_file)
     object_list = pd.read_csv(object_list)
     class_names = object_list.annotation.drop_duplicates().sort_values(ascending=True)
     n_class = class_names.shape[0]
@@ -193,20 +196,60 @@ def overlay_annotations(img_file, object_list, out_dir, out_file):
     for object_i in object_list.itertuples():
         ano = object_i.annotation
         ano_index = class_index[class_names == ano]
-        hex_color = cc.make_color_code(n_color, int(ano_index))
-        rgb_color = (int(hex_color[1:3],16),int(hex_color[3:5],16),int(hex_color[5:7],16))
-        cv2.rectangle(ori_img, (object_i.xmin - 1, object_i.ymin - 1), (object_i.xmax - 1, object_i.ymax - 1), rgb_color, thickness = 3)
+        if n_class == 1:
+            rgb_color = (255, 255, 255)
+        else:
+            hex_color = cc.make_color_code(n_color, int(ano_index))
+            rgb_color = (int(hex_color[1:3],16),int(hex_color[3:5],16),int(hex_color[5:7],16))
+            
+        for i in range(thickness):
+            poly_x = np.array([object_i.ymin - 1 - i, object_i.ymin - 1 - i, object_i.ymax - 1 + i, object_i.ymax - 1 + i])
+            poly_y = np.array([object_i.xmin - 1 - i, object_i.xmax - 1 + i, object_i.xmax - 1 + i, object_i.xmin - 1 - i])
+            l1, l2 = draw.polygon_perimeter(poly_x, poly_y, shape=ori_img.shape)
+            for j in range(3):
+                ori_img[l1, l2, j] = rgb_color[j]
+            
     root, ext = os.path.splitext(img_file)
     out_img_path = os.path.join(out_dir, out_file + ext)
-    cv2.imwrite(out_img_path, ori_img)
-
-def filesorter(in_dir, out_dir, data_type, threshold, voting):
-    list_path = make_object_list(in_dir, out_dir)
-    img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
-    out_file_name = 'annotated_image_before_cleanup'
-    overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
-
-    list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
+    io.imsave(out_img_path, ori_img)
     
-    out_file_name = 'annotated_image_after_cleanup'
-    overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+def get_slice_coordinate(in_dir, object_list):
+    ol = pd.read_csv(object_list)
+    xml_files = ol['xml_file']
+    coordinate = xml_files.str.replace('.+/', '').str.replace('.xml', '').str.split('_', expand=True)
+    x_coord = coordinate[2].str.split('-', expand=True)
+    x0 = x_coord[0].astype('int') + ol['xmin']
+    x1 = x_coord[1].astype('int') + ol['xmax']
+    y_coord = coordinate[1].str.split('-', expand=True)
+    y0 = y_coord[0].astype('int') + ol['ymin']
+    y1 = y_coord[1].astype('int') + ol['ymax']
+    image_file = ol['image_file']
+    slice_coord = pd.concat([image_file, x0, x1, y0, y1], axis=1)
+    slice_coord.columns = ['image_file', 'xmin', 'xmax', 'ymin', 'ymax']
+    slice_coord.to_csv(os.path.join(in_dir, 'slice_cordinate.csv'), index=False)
+    ol['xmin'] = x_coord[0].astype('int') + ol['xmin']
+    ol['xmax'] = x_coord[0].astype('int') + ol['xmax']
+    ol['ymin'] = y_coord[0].astype('int') + ol['ymin']
+    ol['ymax'] = y_coord[0].astype('int') + ol['ymax']
+    ol.to_csv(object_list, index=False)
+    
+def filesorter(in_dir, out_dir, data_type, ori_img, threshold, voting):
+    list_path = make_object_list(in_dir, out_dir)
+    
+    if os.path.exists(os.path.join(in_dir, 'slice_coordinate.csv')):
+        img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
+    else:
+        get_slice_coordinate(in_dir, list_path)
+    
+    
+    if voting:
+        out_file_name = 'annotated_image_before_cleanup'
+        overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+        list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
+        out_file_name = 'annotated_image_after_cleanup'
+        overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+    else:
+        out_file_name = 'annotated_image'
+        overlay_annotations(ori_img, list_path, out_dir, out_file_name)
+    
+

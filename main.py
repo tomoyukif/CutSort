@@ -10,7 +10,6 @@ import os
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog
-import cv2
 from skimage.io import imread
 import tkinter.messagebox
 import threading as th
@@ -248,6 +247,7 @@ class Imagesorter(ttk.Frame):
         widget1 = ttk.Entry(setting_frame,
                               textvariable = self.threshold,
                               style = 'regular.TEntry')
+        widget1.insert(0, "0")
         widget2 = ttk.Checkbutton(setting_frame, 
                               text = 'Vote to decide annotations',
                               variable = self.voting,
@@ -268,6 +268,19 @@ class Imagesorter(ttk.Frame):
                                  textvariable=self.in_dir,
                                  style = 'regular.TLabel')
         in_dir_label.pack(pady = (0, 20))
+        
+        in_file_button = ttk.Button(self.frame,
+                                  text = "Original image file",
+                                  style = 'isl.TButton',
+                                  command = lambda:self.in_file_dialog())
+        in_file_button.pack(pady=(30, 0))
+        self.in_file = tk.StringVar()
+        self.in_file.set('Please select the original image file of sclices.')
+        in_file_label = ttk.Label(self.frame, 
+                                  textvariable = self.in_file,
+                                  style = 'regular.TLabel')
+        in_file_label.pack(pady = (0, 10))
+        
         
         out_dir_button = ttk.Button(self.frame, 
                                   text = "Output directory", 
@@ -315,11 +328,18 @@ class Imagesorter(ttk.Frame):
         step_x = int(self.step_x.get())
         step_y = int(self.step_y.get())
         
-        t_slicer = th.Thread(target=isl.imageslicer, args=(in_file, out_dir, size_x, size_y, step_x, step_y, ))
-        t_slicer.daemon = True
-        pb_bar.start(10)
-        t_slicer.start()
-        master.after(20, check_thread)
+        check1 = in_file == 'Please select an input iamge.'
+        check2 = out_dir == 'Please select an output directory.'
+        if check1:
+            tk.messagebox.showinfo("File Sorter", "Invalid settings.\nPlease specify an input image.")
+        elif check2:
+            tk.messagebox.showinfo("File Sorter", "Invalid settings.\nPlease specify an output directory.")
+        else:
+            t_slicer = th.Thread(target=isl.imageslicer, args=(in_file, out_dir, size_x, size_y, step_x, step_y, ))
+            t_slicer.daemon = True
+            pb_bar.start(10)
+            t_slicer.start()
+            master.after(20, check_thread)
             
     def run_sorter(self):
         def check_thread():
@@ -342,14 +362,25 @@ class Imagesorter(ttk.Frame):
         pb_bar.pack(side = 'left')
         
         in_dir = self.in_dir.get()
+        check1 = in_dir == 'Please select an input directory.'
         out_dir = self.out_dir.get()
+        check2 = out_dir == 'Please select an output directory.'
+        in_file = self.in_file.get()
+        check3 = in_file == 'Please select the original image file of sclices.'
         threshold = float(self.threshold.get())
         voting = self.voting.get()
-        t_sorter = th.Thread(target=fs.filesorter, args=(in_dir, out_dir, self.rb_val, threshold, voting,))
-        t_sorter.daemon = True
-        pb_bar.start(10)
-        t_sorter.start()
-        master.after(20, check_thread)
+        if check1:
+            tk.messagebox.showinfo("File Sorter", "Invalid settings.\nPlease specify an input directory.")
+        elif check2:
+            tk.messagebox.showinfo("File Sorter", "Invalid settings.\nPlease specify an output directory.")
+        elif check3 and (not voting):
+           tk.messagebox.showinfo("File Sorter", "Invalid settings.\nPlease specify the original image or turn on voting.")
+        else:
+            t_sorter = th.Thread(target=fs.filesorter, args=(in_dir, out_dir, self.rb_val, in_file, threshold, voting,))
+            t_sorter.daemon = True
+            pb_bar.start(10)
+            t_sorter.start()
+            master.after(20, check_thread)
         
 
 if __name__ == '__main__':
