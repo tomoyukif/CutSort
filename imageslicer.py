@@ -7,16 +7,15 @@ Created on Mon Sep  7 10:18:43 2020
 """
 
 import os
-import cv2
 import csv
-from skimage.io import imread
+from skimage import io
 
 def imageslicer(in_file, out_dir, size_x, size_y, step_x, step_y):    
             
     if not os.path.exists(out_dir):
         os.mkdir(out_dir)
 
-    img = imread(in_file)
+    img = io.imread(in_file)
     root, ext = os.path.splitext(in_file)
     basename = os.path.basename(root)
     height, width, channels = img.shape[:3]
@@ -47,7 +46,7 @@ def imageslicer(in_file, out_dir, size_x, size_y, step_x, step_y):
     
             sliced_img = img[slice_y0:slice_y1, slice_x0:slice_x1]
             out_file = os.path.join(out_dir, basename + "_" + str(slice_y0) + "-" + str(slice_y1) + "_" + str(slice_x0) + "-" + str(slice_x1) + ext)
-            cv2.imwrite(out_file, sliced_img)
+            io.imsave(out_file, sliced_img)
             
             tmp = [out_file, slice_x0, slice_x1, slice_y0, slice_y1]
             writer = csv.writer(f, lineterminator='\n')

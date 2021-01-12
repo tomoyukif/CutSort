@@ -7,17 +7,39 @@ Created on Mon Sep  7 12:00:52 2020
 """
 
 import os
-import cv2
+import shutil
 import xml.etree.ElementTree as et
 import glob
 import csv
 import pandas as pd
 import numpy as np
-import scipy.stats as stats
 import colorcodes as cc
 from skimage import io, draw
 
-            
+def sort_files(in_dir, out_dir):
+    out_list = os.path.join(out_dir, "object_list.csv")
+
+    with open(out_list, 'w') as f_out:
+        tmp = ["xml_file", "image_file", "class"]
+        writer = csv.writer(f_out, lineterminator='\n')
+        writer.writerow(tmp)
+    
+        for xml in glob.glob(os.path.join(in_dir, "*.xml")):
+            xml_parsed = et.parse(xml)
+            root = xml_parsed.getroot()
+            img_file = root.find('filename').text
+        
+            for entry in root:
+                if entry.tag =='object':
+                    ano = entry.find('name').text
+                    record = [xml, img_file, ano]
+                    writer.writerow(record)
+                    class_dir=os.path.join(out_dir, ano)
+                    if not os.path.exists(class_dir):
+                        os.mkdir(class_dir)
+                    ori_path=os.path.join(in_dir, img_file)
+                    shutil.copy(ori_path, class_dir)
+    
 def make_object_list(in_dir, out_dir):
     out_list = os.path.join(out_dir, "object_list.csv")
     
@@ -78,7 +100,8 @@ def clean_dup_objects(out_dir, object_list, threshold, voting):
         mode_annotations = []
         for i in vote_annotation:
             tmp = i[i != '']
-            mode_annotations = np.append(mode_annotations, stats.mode(tmp)[0])
+            uni, count = np.unique(tmp, return_counts=True)
+            mode_annotations = np.append(mode_annotations, uni[count == np.amax(count)])
         
         overlaps_xmin = valid_overlaps * xmin
         overlaps_xmin = overlaps_xmin.astype('float')
@@ -172,7 +195,7 @@ def merge_slices(in_dir, out_dir, object_list):
     ori_img = np.zeros((img_height, img_width, 3), np.uint8)
     
     for slice_file in slice_coordinate.image_file:
-        tmp_img = cv2.imread(slice_file)
+        tmp_img = io.imread(slice_file)
         record = slice_coordinate[slice_coordinate.image_file == slice_file]
         ori_img[int(record.y0):int(record.y1), int(record.x0):int(record.x1)] = tmp_img
         object_list.loc[object_list.image_file == os.path.split(slice_file)[1], ['xmin', 'xmax']] += int(record.x0)
@@ -180,7 +203,7 @@ def merge_slices(in_dir, out_dir, object_list):
     
     root, ext = os.path.splitext(slice_file)
     out_img_path = os.path.join(out_dir, 'original_image' + ext)
-    io.imwrite(out_img_path, ori_img)
+    io.imsave(out_img_path, ori_img)
     out_list_path = os.path.join(out_dir, 'updated_list.csv')
     object_list.to_csv(out_list_path)
     return([out_img_path, out_list_path])
@@ -188,7 +211,8 @@ def merge_slices(in_dir, out_dir, object_list):
 def overlay_annotations(img_file, object_list, out_dir, out_file):
     thickness = 10
     ori_img = io.imread(img_file)
-    object_list = pd.read_csv(object_list)
+    if not type(object_list) is str:
+        object_list = pd.read_csv(object_list)
     class_names = object_list.annotation.drop_duplicates().sort_values(ascending=True)
     n_class = class_names.shape[0]
     class_index = np.array(range(0, n_class, 1))
@@ -232,24 +256,46 @@ def get_slice_coordinate(in_dir, object_list):
     ol['ymin'] = y_coord[0].astype('int') + ol['ymin']
     ol['ymax'] = y_coord[0].astype('int') + ol['ymax']
     ol.to_csv(object_list, index=False)
+    return(object_list)
     
 def filesorter(in_dir, out_dir, data_type, ori_img, threshold, voting):
-    list_path = make_object_list(in_dir, out_dir)
+    print(data_type)
+    if data_type==1:
+        list_path = make_object_list(in_dir, out_dir)
+        
+        if os.path.exists(os.path.join(in_dir, 'slice_coordinate.csv')):
+            if in_file == 'Please select the original image file of sclices.':
+                img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
+                out_file_name = 'annotated_image_before_cleanup'
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
+                out_file_name = 'annotated_image_after_cleanup'
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+            else:
+                out_file_name = 'annotated_image'
+                overlay_annotations(ori_img, list_path, out_dir, out_file_name)
+        else:
+            list_path = get_slice_coordinate(in_dir, list_path)
+            if in_file == 'Please select the original image file of sclices.':
+                img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
+                out_file_name = 'annotated_image_before_cleanup'
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
+                out_file_name = 'annotated_image_after_cleanup'
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+            else:
+                out_file_name = 'annotated_image'
+                overlay_annotations(ori_img, list_path, out_dir, out_file_name)
+                
+    elif data_type==2:
+        list_path = make_object_list(in_dir, out_dir)
+        object_list = pd.read_csv(list_path)
+        for object_i in object_list.itertuples():
+            img_file_path = object_i.img_file
+            img_file_name = os.path.basename(img_file_path)
+            img_file_root, ext = os.path.splitext(img_file_name)
+            out_file_name = os.path.join('annotated_', img_file_root)
+            overlay_annotations(img_file_path, object_i, out_dir, out_file_name)
     
-    if os.path.exists(os.path.join(in_dir, 'slice_coordinate.csv')):
-        img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
-    else:
-        get_slice_coordinate(in_dir, list_path)
-    
-    
-    if voting:
-        out_file_name = 'annotated_image_before_cleanup'
-        overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
-        list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
-        out_file_name = 'annotated_image_after_cleanup'
-        overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
-    else:
-        out_file_name = 'annotated_image'
-        overlay_annotations(ori_img, list_path, out_dir, out_file_name)
-    
-
+    elif data_type==3:
+        sort_files(in_dir, out_dir)
