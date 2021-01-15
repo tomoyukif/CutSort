@@ -4,8 +4,8 @@ ImageSorter is a GUI-based image processing tool which provides the following fu
 2. Sort image files into separate folders based on annotation information generated via [RectLabel](https://rectlabel.com/).
 
 # Download CutSort app for mac
-Require Mac OS X 10.15 or later
-<a href = "CutSort.app" download = "https://github.com/tomoyukif/CutSort/dist/CutSort.app">Download</a>
+Require Mac OS X 10.15 or later<br>
+<a href = "CutSort.app" download = "https://github.com/tomoyukif/CutSort/tree/main/dist/Cutsort.app/Contents">Download</a>
 
 # Dependencies
 ImageSorter is written in Python and requires libraries listed below.  
