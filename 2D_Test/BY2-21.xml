@@ -1,0 +1,36 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>BY2-21.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>418</xmin>
+            <ymin>611</ymin>
+            <xmax>670</xmax>
+            <ymax>857</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>976</xmin>
+            <ymin>861</ymin>
+            <xmax>1193</xmax>
+            <ymax>1030</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>410</xmin>
+            <ymin>337</ymin>
+            <xmax>731</xmax>
+            <ymax>597</ymax>
+        </bndbox>
+    </object>
+</annotation>

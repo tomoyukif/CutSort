@@ -1,0 +1,45 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>So3.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>377</xmin>
+            <ymin>722</ymin>
+            <xmax>787</xmax>
+            <ymax>1030</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>460</xmin>
+            <ymin>318</ymin>
+            <xmax>876</xmax>
+            <ymax>662</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>54</xmin>
+            <ymin>750</ymin>
+            <xmax>401</xmax>
+            <ymax>1030</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>359</xmin>
+            <ymin>199</ymin>
+            <xmax>607</xmax>
+            <ymax>454</ymax>
+        </bndbox>
+    </object>
+</annotation>

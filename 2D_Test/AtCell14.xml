@@ -1,0 +1,36 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>AtCell14.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>1017</xmin>
+            <ymin>311</ymin>
+            <xmax>1199</xmax>
+            <ymax>473</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>523</xmin>
+            <ymin>330</ymin>
+            <xmax>721</xmax>
+            <ymax>501</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>407</xmin>
+            <ymin>290</ymin>
+            <xmax>750</xmax>
+            <ymax>522</ymax>
+        </bndbox>
+    </object>
+</annotation>

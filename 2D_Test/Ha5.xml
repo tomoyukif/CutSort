@@ -1,0 +1,36 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Ha5.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>906</xmin>
+            <ymin>10</ymin>
+            <xmax>1243</xmax>
+            <ymax>316</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>274</xmin>
+            <ymin>429</ymin>
+            <xmax>1035</xmax>
+            <ymax>788</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>112</xmin>
+            <ymin>138</ymin>
+            <xmax>459</xmax>
+            <ymax>446</ymax>
+        </bndbox>
+    </object>
+</annotation>

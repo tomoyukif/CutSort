@@ -1,0 +1,18 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Ta3.PNG</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>286</xmin>
+            <ymin>184</ymin>
+            <xmax>1065</xmax>
+            <ymax>863</ymax>
+        </bndbox>
+    </object>
+</annotation>

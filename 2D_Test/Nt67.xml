@@ -1,0 +1,27 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Nt67.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>556</xmin>
+            <ymin>263</ymin>
+            <xmax>1075</xmax>
+            <ymax>800</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>17</xmin>
+            <ymin>205</ymin>
+            <xmax>250</xmax>
+            <ymax>472</ymax>
+        </bndbox>
+    </object>
+</annotation>

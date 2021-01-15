@@ -1,0 +1,18 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>AtN-25.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>24</xmin>
+            <ymin>47</ymin>
+            <xmax>346</xmax>
+            <ymax>620</ymax>
+        </bndbox>
+    </object>
+</annotation>

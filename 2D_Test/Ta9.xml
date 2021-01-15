@@ -1,0 +1,36 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Ta9.PNG</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>312</xmin>
+            <ymin>225</ymin>
+            <xmax>740</xmax>
+            <ymax>637</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>708</xmin>
+            <ymin>181</ymin>
+            <xmax>1005</xmax>
+            <ymax>498</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>404</xmin>
+            <ymin>623</ymin>
+            <xmax>667</xmax>
+            <ymax>879</ymax>
+        </bndbox>
+    </object>
+</annotation>

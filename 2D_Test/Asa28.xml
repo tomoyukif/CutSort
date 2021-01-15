@@ -1,0 +1,45 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Asa28.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>328</xmin>
+            <ymin>861</ymin>
+            <xmax>691</xmax>
+            <ymax>1030</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>539</xmin>
+            <ymin>28</ymin>
+            <xmax>897</xmax>
+            <ymax>316</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>114</xmin>
+            <ymin>645</ymin>
+            <xmax>581</xmax>
+            <ymax>899</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>436</xmin>
+            <ymin>321</ymin>
+            <xmax>877</xmax>
+            <ymax>892</ymax>
+        </bndbox>
+    </object>
+</annotation>

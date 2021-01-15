@@ -1,0 +1,27 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>In5.PNG</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>415</xmin>
+            <ymin>481</ymin>
+            <xmax>644</xmax>
+            <ymax>673</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>88</xmin>
+            <ymin>276</ymin>
+            <xmax>298</xmax>
+            <ymax>539</ymax>
+        </bndbox>
+    </object>
+</annotation>

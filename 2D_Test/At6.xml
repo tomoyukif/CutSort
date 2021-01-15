@@ -1,0 +1,36 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>At6.PNG</filename>
+    <size>
+        <width>1388</width>
+        <height>1040</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>1162</xmin>
+            <ymin>805</ymin>
+            <xmax>1386</xmax>
+            <ymax>1007</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>339</xmin>
+            <ymin>412</ymin>
+            <xmax>597</xmax>
+            <ymax>615</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>340</xmin>
+            <ymin>414</ymin>
+            <xmax>817</xmax>
+            <ymax>953</ymax>
+        </bndbox>
+    </object>
+</annotation>

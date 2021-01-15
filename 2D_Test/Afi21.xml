@@ -1,0 +1,27 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Afi21.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>333</xmin>
+            <ymin>249</ymin>
+            <xmax>769</xmax>
+            <ymax>746</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>610</xmin>
+            <ymin>525</ymin>
+            <xmax>867</xmax>
+            <ymax>797</ymax>
+        </bndbox>
+    </object>
+</annotation>

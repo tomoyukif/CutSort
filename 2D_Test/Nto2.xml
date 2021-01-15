@@ -1,0 +1,18 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Nto2.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>366</xmin>
+            <ymin>281</ymin>
+            <xmax>860</xmax>
+            <ymax>803</ymax>
+        </bndbox>
+    </object>
+</annotation>

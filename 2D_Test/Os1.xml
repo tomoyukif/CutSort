@@ -1,0 +1,45 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>Os1.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>659</xmin>
+            <ymin>357</ymin>
+            <xmax>848</xmax>
+            <ymax>533</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>3</xmin>
+            <ymin>558</ymin>
+            <xmax>167</xmax>
+            <ymax>755</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>580</xmin>
+            <ymin>304</ymin>
+            <xmax>943</xmax>
+            <ymax>592</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>Others</name>
+        <bndbox>
+            <xmin>921</xmin>
+            <ymin>441</ymin>
+            <xmax>1114</xmax>
+            <ymax>571</ymax>
+        </bndbox>
+    </object>
+</annotation>

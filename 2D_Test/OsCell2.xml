@@ -1,0 +1,18 @@
+<annotation>
+    <folder>2D Test</folder>
+    <filename>OsCell2.png</filename>
+    <size>
+        <width>1300</width>
+        <height>1030</height>
+        <depth>3</depth>
+    </size>
+    <object>
+        <name>Chromosomes</name>
+        <bndbox>
+            <xmin>254</xmin>
+            <ymin>299</ymin>
+            <xmax>779</xmax>
+            <ymax>795</ymax>
+        </bndbox>
+    </object>
+</annotation>
