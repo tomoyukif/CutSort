@@ -1,1 +1,1 @@
-([('main', '/Users/ftom/Downloads/imagesorter/dist/main', 'EXECUTABLE')],)
+([('main', '/Users/ftom/Downloads/CutSort/dist/main', 'EXECUTABLE')],)
