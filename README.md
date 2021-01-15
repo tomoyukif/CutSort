@@ -5,7 +5,7 @@ ImageSorter is a GUI-based image processing tool which provides the following fu
 
 # Download CutSort app for mac
 Require Mac OS X 10.15 or later<br>
-<a href = "CutSort.app" download = "./dist/Cutsort.app">Download</a>
+<a download = "dist/CutSort.app">Download</a>
 
 # Dependencies
 ImageSorter is written in Python and requires libraries listed below.  
