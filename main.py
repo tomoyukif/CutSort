@@ -10,7 +10,6 @@ import os
 import tkinter as tk
 import tkinter.ttk as ttk
 import tkinter.filedialog
-import csv
 from skimage import io
 import tkinter.messagebox
 import threading as th
@@ -92,8 +91,8 @@ class CutsortGUI(ttk.Frame):
             
         s = ttk.Style()
         s.configure('isl.TButton', font = ('Helvetica', '12', 'bold'))
-        s.configure('small.TLabel', font = ('Helvetica', '10'), background = 'white')
-        s.configure('regular.TLabel', font = ('Helvetica', '12'), background = 'white')
+        s.configure('small.TLabel', font = ('Helvetica', '10'))
+        s.configure('regular.TLabel', font = ('Helvetica', '12'))
          
         back_button = ttk.Button(self,
                                  text = "Back to Menu",
@@ -248,11 +247,11 @@ class CutsortGUI(ttk.Frame):
             
         s = ttk.Style()
         s.configure('fs.TButton', font = ('Helvetica', '12', 'bold'))
-        s.configure('small.TLabel', font = ('Helvetica', '10'), background = 'white')
-        s.configure('regular.TLabel', font = ('Helvetica', '12'), background = 'white')
-        s.configure('regular.TLabelframe', font = ('Helvetica', '12'), background = 'white')
-        s.configure('regular.TRadiobutton', font = ('Helvetica', '12'), background = 'white')
-        s.configure('regular.TEntry', font = ('Helvetica', '12'), background = 'white')
+        s.configure('small.TLabel', font = ('Helvetica', '10'))
+        s.configure('regular.TLabel', font = ('Helvetica', '12'))
+        s.configure('regular.TLabelframe', font = ('Helvetica', '12'))
+        s.configure('regular.TRadiobutton', font = ('Helvetica', '12'))
+        s.configure('regular.TEntry', font = ('Helvetica', '12'))
          
         back_button = ttk.Button(self,
                                  text = "Back to Menu",

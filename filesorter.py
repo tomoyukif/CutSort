@@ -14,7 +14,7 @@ import csv
 import pandas as pd
 import numpy as np
 import colorcodes as cc
-from skimage import io, draw
+from skimage import io, draw, color
 
 def sort_files(in_dir, out_dir):
     out_list = os.path.join(out_dir, "object_list.csv")
@@ -27,7 +27,7 @@ def sort_files(in_dir, out_dir):
         for xml in glob.glob(os.path.join(in_dir, "*.xml")):
             xml_parsed = et.parse(xml)
             root = xml_parsed.getroot()
-            img_file = root.find('filename').text
+            img_file = os.path.join(in_dir, root.find('filename').text)
         
             for entry in root:
                 if entry.tag =='object':
@@ -51,7 +51,7 @@ def make_object_list(in_dir, out_dir):
         for xml in glob.glob(os.path.join(in_dir, "*.xml")):
             xml_parsed = et.parse(xml)
             root = xml_parsed.getroot()
-            img_file = root.find('filename').text
+            img_file = os.path.join(in_dir, root.find('filename').text)
             
             for entry in root:
                 if entry.tag =='object':
@@ -208,34 +208,71 @@ def merge_slices(in_dir, out_dir, object_list):
     object_list.to_csv(out_list_path)
     return([out_img_path, out_list_path])
 
-def overlay_annotations(img_file, object_list, out_dir, out_file):
+def overlay_annotations(img_file, object_list, out_dir, out_file, data_type):
     thickness = 10
-    ori_img = io.imread(img_file)
-    if not type(object_list) is str:
-        object_list = pd.read_csv(object_list)
+    object_list = pd.read_csv(object_list)
     class_names = object_list.annotation.drop_duplicates().sort_values(ascending=True)
     n_class = class_names.shape[0]
     class_index = np.array(range(0, n_class, 1))
     n_color = n_class + 3 - (n_class % 3)
-    for object_i in object_list.itertuples():
-        ano = object_i.annotation
-        ano_index = class_index[class_names == ano]
-        if n_class == 1:
-            rgb_color = (255, 255, 255)
-        else:
-            hex_color = cc.make_color_code(n_color, int(ano_index))
-            rgb_color = (int(hex_color[1:3],16),int(hex_color[3:5],16),int(hex_color[5:7],16))
-            
-        for i in range(thickness):
-            poly_x = np.array([object_i.ymin - 1 - i, object_i.ymin - 1 - i, object_i.ymax - 1 + i, object_i.ymax - 1 + i])
-            poly_y = np.array([object_i.xmin - 1 - i, object_i.xmax - 1 + i, object_i.xmax - 1 + i, object_i.xmin - 1 - i])
-            l1, l2 = draw.polygon_perimeter(poly_x, poly_y, shape=ori_img.shape)
-            for j in range(3):
-                ori_img[l1, l2, j] = rgb_color[j]
-            
-    root, ext = os.path.splitext(img_file)
-    out_img_path = os.path.join(out_dir, out_file + ext)
-    io.imsave(out_img_path, ori_img)
+    with open(os.path.join(out_dir, "color_code.csv"), mode="w") as f:
+        for i in class_index:
+            hex_color = cc.make_color_code(n_color, i)
+            color_code = (class_names.iloc[i], hex_color)
+            print(*color_code, file=f, sep=",")
+    
+    if data_type == 1:
+        ori_img = io.imread(img_file)
+        if len(ori_img.shape) == 2:
+            ori_img = color.gray2rgb(ori_img)
+        for object_i in object_list.itertuples():
+            ano = object_i.annotation
+            ano_index = class_index[class_names == ano]
+            if n_class == 1:
+                rgb_color = (255, 255, 255)
+            else:
+                hex_color = cc.make_color_code(n_color, int(ano_index))
+                rgb_color = (int(hex_color[1:3],16),int(hex_color[3:5],16),int(hex_color[5:7],16))
+                
+            for i in range(thickness):
+                poly_x = np.array([object_i.ymin - 1 - i, object_i.ymin - 1 - i, object_i.ymax - 1 + i, object_i.ymax - 1 + i])
+                poly_y = np.array([object_i.xmin - 1 - i, object_i.xmax - 1 + i, object_i.xmax - 1 + i, object_i.xmin - 1 - i])
+                l1, l2 = draw.polygon_perimeter(poly_x, poly_y, shape=ori_img.shape)
+                for j in range(3):
+                    ori_img[l1, l2, j] = rgb_color[j]
+                
+        root, ext = os.path.splitext(img_file)
+        out_img_path = os.path.join(out_dir, out_file + ext)
+        io.imsave(out_img_path, ori_img)
+    else:
+        for object_i in object_list.itertuples():
+            img_file_path = object_i.image_file
+            img_file_name = os.path.basename(img_file_path)
+            out_file_name = 'annotated_' + img_file_name
+            if not os.path.exists(os.path.join(out_dir, out_file_name)):
+                shutil.copy(img_file_path, os.path.join(out_dir, out_file_name))
+            img_file_path = os.path.join(out_dir, out_file_name)
+            ori_img = io.imread(img_file_path)  
+            ano = object_i.annotation
+            ano_index = class_index[class_names == ano]
+            if n_class == 1:
+                rgb_color = (255, 255, 255)
+            else:
+                hex_color = cc.make_color_code(n_color, int(ano_index))
+                rgb_color = (int(hex_color[1:3],16),int(hex_color[3:5],16),int(hex_color[5:7],16))
+                
+            for i in range(thickness):
+                poly_x = np.array([object_i.ymin - 1 - i, object_i.ymin - 1 - i, object_i.ymax - 1 + i, object_i.ymax - 1 + i])
+                poly_y = np.array([object_i.xmin - 1 - i, object_i.xmax - 1 + i, object_i.xmax - 1 + i, object_i.xmin - 1 - i])
+                l1, l2 = draw.polygon_perimeter(poly_x, poly_y, shape=ori_img.shape)
+                if len(ori_img.shape) == 2:
+                    ori_img = color.gray2rgb(ori_img)
+                for j in range(3):
+                    ori_img[l1, l2, j] = rgb_color[j]
+            io.imsave(img_file_path, ori_img)
+        
+        
+
     
 def get_slice_coordinate(in_dir, object_list):
     ol = pd.read_csv(object_list)
@@ -258,8 +295,9 @@ def get_slice_coordinate(in_dir, object_list):
     ol.to_csv(object_list, index=False)
     return(object_list)
     
-def filesorter(in_dir, out_dir, data_type, ori_img, threshold, voting):
-    print(data_type)
+def filesorter(in_dir, out_dir, data_type, in_file, threshold, voting):
+    shutil.rmtree(out_dir)
+    os.mkdir(out_dir)
     if data_type==1:
         list_path = make_object_list(in_dir, out_dir)
         
@@ -267,35 +305,31 @@ def filesorter(in_dir, out_dir, data_type, ori_img, threshold, voting):
             if in_file == 'Please select the original image file of sclices.':
                 img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
                 out_file_name = 'annotated_image_before_cleanup'
-                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name, data_type)
                 list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
                 out_file_name = 'annotated_image_after_cleanup'
-                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name, data_type)
             else:
                 out_file_name = 'annotated_image'
-                overlay_annotations(ori_img, list_path, out_dir, out_file_name)
+                overlay_annotations(in_file, list_path, out_dir, out_file_name, data_type)
         else:
             list_path = get_slice_coordinate(in_dir, list_path)
             if in_file == 'Please select the original image file of sclices.':
                 img_file_path, list_path = merge_slices(in_dir, out_dir, list_path)
                 out_file_name = 'annotated_image_before_cleanup'
-                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name, data_type)
                 list_path = clean_dup_objects(out_dir, list_path, threshold, voting)
                 out_file_name = 'annotated_image_after_cleanup'
-                overlay_annotations(img_file_path, list_path, out_dir, out_file_name)
+                overlay_annotations(img_file_path, list_path, out_dir, out_file_name, data_type)
             else:
                 out_file_name = 'annotated_image'
-                overlay_annotations(ori_img, list_path, out_dir, out_file_name)
+                overlay_annotations(in_file, list_path, out_dir, out_file_name, data_type)
                 
     elif data_type==2:
         list_path = make_object_list(in_dir, out_dir)
-        object_list = pd.read_csv(list_path)
-        for object_i in object_list.itertuples():
-            img_file_path = object_i.img_file
-            img_file_name = os.path.basename(img_file_path)
-            img_file_root, ext = os.path.splitext(img_file_name)
-            out_file_name = os.path.join('annotated_', img_file_root)
-            overlay_annotations(img_file_path, object_i, out_dir, out_file_name)
+        img_file_path = ""
+        out_file_name = ""
+        overlay_annotations(img_file_path, list_path, out_dir, out_file_name, data_type)
     
     elif data_type==3:
         sort_files(in_dir, out_dir)
