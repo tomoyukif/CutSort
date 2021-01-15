@@ -4,8 +4,9 @@ ImageSorter is a GUI-based image processing tool which provides the following fu
 2. Sort image files into separate folders based on annotation information generated via [RectLabel](https://rectlabel.com/).
 
 # Installation
-Downlaod the "CutSort.app" executable file.
-To download it, right click on "CutSort.app" in the file list above and chose "Download linked file".
+Downlaod the "CutSort.app" executable file.<br>
+To download it, right click on "CutSort.app" in the file list above and chose "Download linked file".<br>
+Starting up of the app will take time usually for 1-2 min (This will be improved in the future release).
 
 # Dependencies
 ImageSorter is written in Python and requires libraries listed below.  
