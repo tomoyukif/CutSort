@@ -1,1 +1,0 @@
-([('main', '/Users/ftom/Downloads/imagesorter-main/dist/main', 'EXECUTABLE')],)
