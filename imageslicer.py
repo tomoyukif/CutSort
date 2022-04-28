@@ -18,7 +18,7 @@ def imageslicer(in_file, out_dir, size_x, size_y, step_x, step_y):
     img = io.imread(in_file)
     root, ext = os.path.splitext(in_file)
     basename = os.path.basename(root)
-    height, width, channels = img.shape[:3]
+    height, width = img.shape[:2]
 
     slice_x0 = 0
     slice_y0 = 0

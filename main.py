@@ -78,7 +78,7 @@ class CutsortGUI(ttk.Frame):
             self.in_file.set(in_file)
             img_file = self.in_file.get()
             img = io.imread(img_file)
-            height, width, channels = img.shape[:3]
+            height, width = img.shape[:2]
             img_h_text = 'Height = ' + str(height) + ' pixels'
             self.img_h.set(img_h_text)
             img_w_text = 'Width = ' + str(width) + ' pixels'
