@@ -5,7 +5,7 @@ ImageSorter is a GUI-based image processing tool which provides the following fu
 
 # Installation
 Download the file in thie repository and put "CutSort.app" somewhere you like.
-"CutSort.app" is an executable file on Mac OS X 10.15 or later.
+"CutSort.app" is an executable file on Mac OS X 10.15 or later, which was built using Pyinstaller.
 
 # Dependencies
 ImageSorter is written in Python and requires libraries listed below.  
