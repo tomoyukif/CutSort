@@ -1,3 +1,6 @@
+# Now R implementation of CutSort is availavle.
+[CutSortR](https://github.com/tomoyukif/CutSortR)
+
 # ImageSorter
 ImageSorter is a GUI-based image processing tool which provides the following functions.
 1. Generate sliced images from an input image.
